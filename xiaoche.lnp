@@ -1,0 +1,9 @@
+"STARTUP.obj",
+"forback.obj",
+"mian.obj",
+"delay.obj",
+"uart.obj",
+"timer.obj",
+"ste_wave.obj" 
+TO "xiaoche" 
+RAMSIZE(256) 

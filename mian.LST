@@ -1,0 +1,240 @@
+C51 COMPILER V9.52.0.0   MIAN                                                              03/14/2024 19:39:15 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MIAN
+OBJECT MODULE PLACED IN mian.OBJ
+COMPILER INVOKED BY: D:\keil\C51\BIN\C51.EXE mian.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "forback.h"
+   2          #include "delay.h"
+   3          #include "uart.h"
+   4          #include "timer.h"
+   5          #include "reg52.h"
+   6          #include "ste_wave.h"
+   7          #define left  1
+   8          #define right 2
+   9          #define middle 3
+  10          sbit a25 = P1^7;
+  11          sbit a26 = P1^6;
+  12          sbit a27 = P1^5;
+  13          sbit rinf = P2^2;
+  14          sbit linf = P2^3;
+  15          //sbit remote1 = P1^3;
+  16          //sbit remote2 = P1^4;
+  17          //sbit remote3 = P1^5;
+  18          //sbit remote4 = P1^6;
+  19          extern int overtime;
+  20          extern int angle;
+  21          extern int ltimer,rtimer;
+  22          int remote_mark = 0;
+  23          char location;
+  24          double l_dis,r_dis,m_dis;
+  25          void rig_turn();
+  26          void lef_turn();
+  27          void mid_turn();
+  28          void main(){
+  29   1        T0init();
+  30   1        T1init();
+  31   1        angle = 4;
+  32   1        location = middle;
+  33   1        Delay300ms();
+  34   1        Delay300ms();
+  35   1      //  mid_turn();
+  36   1        while(1){
+  37   2          Delay30ms();
+  38   2      //    if(remote1 == 1){
+  39   2      //      remote_mark = 1;
+  40   2      //    }
+  41   2      //    if(remote2 == 1){
+  42   2      //      remote_mark = 2;
+  43   2      //    }
+  44   2      //    if(remote3 == 1){
+  45   2      //      remote_mark = 3;
+  46   2      //    }
+  47   2      //    if(remote4 == 1){
+  48   2      //      remote_mark = 4;
+  49   2      //    }
+  50   2      //    switch(remote_mark){
+  51   2      //      case 1:
+  52   2      //        if(location != middle){
+  53   2      //          angle = 4;
+  54   2      //          location = middle;
+  55   2      //          Delay300ms();
+C51 COMPILER V9.52.0.0   MIAN                                                              03/14/2024 19:39:15 PAGE 2   
+
+  56   2      //        }
+  57   2      //        m_dis = get_distance();
+  58   2      //        
+  59   2      //        if(m_dis > 35){
+  60   2      //          //??
+  61   2      //          car_forward();
+  62   2      //        }else if(m_dis < 10){
+  63   2      //          car_back();
+  64   2      //          
+  65   2      //        }else
+  66   2      //        {
+  67   2      //          //??
+  68   2      //          car_stop();
+  69   2      //          //?????
+  70   2      //          angle = 6;
+  71   2      //          Delay300ms();
+  72   2      //          l_dis = get_distance();
+  73   2      //          
+  74   2      //          angle = 4;
+  75   2      //          Delay300ms();
+  76   2      //          
+  77   2      //          angle = 2;
+  78   2      //          location = right;
+  79   2      //          Delay300ms();
+  80   2      //          r_dis = get_distance();
+  81   2      //          
+  82   2      //          if(l_dis < r_dis){
+  83   2      //            car_right();
+  84   2      //            Delay250ms();
+  85   2      //            car_stop();
+  86   2      //          }
+  87   2      //          if(r_dis < l_dis){
+  88   2      //            car_left();
+  89   2      //            Delay250ms();
+  90   2      //            car_stop();
+  91   2      //          }
+  92   2      //        }
+  93   2            if(a25 == 1 && a26 == 0 && a27 == 1){
+  94   3              mid_turn();
+  95   3              if(m_dis >30){
+  96   4                car_forward();
+  97   4              }else if(m_dis < 10){ 
+  98   4                car_back();
+  99   4                Delay150ms();
+ 100   4              }else{
+ 101   4                car_stop();
+ 102   4                lef_turn();
+ 103   4                angle = 4;
+ 104   4                Delay350ms();
+ 105   4                rig_turn();
+ 106   4                if(l_dis > r_dis && l_dis > 10){
+ 107   5                  car_left();
+ 108   5                  Delay250ms();
+ 109   5                  car_stop();
+ 110   5                }else if (l_dis < r_dis && r_dis >10){
+ 111   5                  car_right();
+ 112   5                  Delay250ms();
+ 113   5                  car_stop();
+ 114   5                }else{
+ 115   5                  car_back();
+ 116   5                  Delay250ms();
+ 117   5                  car_stop();
+C51 COMPILER V9.52.0.0   MIAN                                                              03/14/2024 19:39:15 PAGE 3   
+
+ 118   5                }
+ 119   4              }
+ 120   3            }
+ 121   2      //      break;
+ 122   2      //      case 2:
+ 123   2            if(a25 == 0 && a26 == 1 && a27 == 1){
+ 124   3              car_stop();
+ 125   3            }
+ 126   2      //      break;
+ 127   2      //      case 3:
+ 128   2      //        if(linf == 0 && rinf ==0){
+ 129   2      //          car_forward();
+ 130   2      //        }else if(linf == 1 && rinf ==0){
+ 131   2      //          car_left();
+ 132   2      //        }else if(linf == 0 && rinf ==1){
+ 133   2      //          car_right();
+ 134   2      //        }else if(linf == 1 && rinf == 1){
+ 135   2      //          car_stop();
+ 136   2      //        }
+ 137   2      //      break;
+ 138   2      //      case 4:
+ 139   2            if(a25 == 1 && a26 == 1 && a27 == 0){
+ 140   3              if(linf == 1 && rinf ==1){
+ 141   4                car_forward();
+ 142   4              }else if(linf == 1 && rinf ==0){
+ 143   4                car_right();
+ 144   4              }else if(linf == 0 && rinf ==1){
+ 145   4                car_left();
+ 146   4              }else if(linf == 0 && rinf == 0){
+ 147   4                car_stop();
+ 148   4              }
+ 149   3            }
+ 150   2      //        break;
+ 151   2      //      default:
+ 152   2      //        car_stop();
+ 153   2      //      break;
+ 154   2      //    }
+ 155   2          
+ 156   2        }
+ 157   1      }
+ 158          void mid_turn(){
+ 159   1        angle = 4;
+ 160   1        Delay350ms();
+ 161   1        m_dis = get_distance();
+ 162   1        
+ 163   1      }
+ 164          void rig_turn(){
+ 165   1        angle = 2;
+ 166   1        Delay350ms();
+ 167   1        r_dis = get_distance();
+ 168   1        
+ 169   1      }
+ 170          void lef_turn(){
+ 171   1        angle = 6;
+ 172   1        Delay350ms();
+ 173   1        l_dis = get_distance();
+ 174   1        
+ 175   1      }
+ 176          /*void main(){ //小车循迹，向收不到信号的方向转
+ 177          //  uart_init();
+ 178            time1_init();
+ 179            time0_init();
+C51 COMPILER V9.52.0.0   MIAN                                                              03/14/2024 19:39:15 PAGE 4   
+
+ 180            while(1){ 
+ 181              if(linf == 0 && rinf ==0){
+ 182                car_forward();
+ 183              }else if(linf == 1 && rinf ==0){
+ 184                ltimer = 10;
+ 185                rtimer = 40;
+ 186              }else if(linf == 0 && rinf ==1){
+ 187                ltimer = 40;
+ 188                rtimer = 10;
+ 189              }else if(linf == 1 && rinf == 1){
+ 190                car_stop();
+ 191              }
+ 192            }
+ 193          }*/
+ 194          /*void main(){ //小车跟随，原理和循迹一样，向收到信号的方向转
+ 195          //  uart_init();
+ 196            time1_init();
+ 197            time0_init();
+ 198            while(1){ 
+ 199              if(linf == 0 && rinf ==0){
+ 200                car_forward();
+ 201              }else if(linf == 1 && rinf ==0){
+ 202                ltimer = 10;
+ 203                rtimer = 40;
+ 204              }else if(linf == 0 && rinf ==1){
+ 205                ltimer = 40;
+ 206                rtimer = 10;
+ 207              }else if(linf == 1 && rinf == 1){
+ 208                car_stop();
+ 209              }
+ 210            }
+ 211          }*/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    373    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     15    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,81 @@
+C51 COMPILER V9.52.0.0   FORBACK                                                           03/14/2024 19:39:15 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE FORBACK
+OBJECT MODULE PLACED IN forback.OBJ
+COMPILER INVOKED BY: D:\keil\C51\BIN\C51.EXE forback.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include"reg52.h"
+   2          
+   3          sbit dianji1=P2^4;
+   4          sbit dianji2 = P2^5;
+   5          sbit dianji3=P2^6;
+   6          sbit dianji4 = P2^7;
+   7          void lforward(){
+   8   1        dianji1 = 0;
+   9   1        dianji2 = 1;
+  10   1      }
+  11          void rforward(){
+  12   1        dianji3 = 1;
+  13   1        dianji4 = 0;
+  14   1      }
+  15          void lback(){
+  16   1        dianji1 = 1;
+  17   1        dianji2 = 0;
+  18   1      }
+  19          void rback(){
+  20   1        dianji3 = 0;
+  21   1        dianji4 = 1;
+  22   1      }
+  23          void car_forward(){
+  24   1        lforward();
+  25   1        rforward();
+  26   1      }
+  27          void car_back(){
+  28   1        lback();
+  29   1        rback();
+  30   1      }
+  31          void car_left(){
+  32   1        dianji1 = 0;
+  33   1        dianji2 = 0;
+  34   1        dianji3 = 1;
+  35   1        dianji4 = 0;
+  36   1      }
+  37          void car_right(){
+  38   1        dianji1 = 0;
+  39   1        dianji2 = 1;
+  40   1        dianji3 = 0;
+  41   1        dianji4 = 0;
+  42   1      }
+  43          void car_stop(){
+  44   1        dianji1 = 0;
+  45   1        dianji2 = 0;
+  46   1        dianji3 = 0;
+  47   1        dianji4 = 0;
+  48   1      }
+  49          void lstop(){
+  50   1        dianji1 = 0;
+  51   1        dianji2 = 0;
+  52   1      }
+  53          void rstop(){
+  54   1        dianji3 = 0;
+  55   1        dianji4 = 0;
+C51 COMPILER V9.52.0.0   FORBACK                                                           03/14/2024 19:39:15 PAGE 2   
+
+  56   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     69    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

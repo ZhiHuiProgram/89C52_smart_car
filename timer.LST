@@ -1,0 +1,92 @@
+C51 COMPILER V9.52.0.0   TIMER                                                             03/14/2024 19:39:16 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE TIMER
+OBJECT MODULE PLACED IN timer.OBJ
+COMPILER INVOKED BY: D:\keil\C51\BIN\C51.EXE timer.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include"reg52.h"
+   2          #include"forback.h"
+   3          int time0= 0;
+   4          int time1 = 0;
+   5          int ltimer,rtimer;
+   6          void time0_init(){
+   7   1        TMOD &= 0xf0;
+   8   1        TMOD |= 0x01;
+   9   1        //2 计算需要的时间
+  10   1        TL0 = 0x33;
+  11   1        TH0 = 0xFE;
+  12   1        //3 开始运行
+  13   1        TR0 = 1;
+  14   1        TF0 = 0;
+  15   1        //打开中断
+  16   1        ET0 = 1;
+  17   1        //打开总线
+  18   1        EA = 1;
+  19   1      }
+  20          /*void overtime0() interrupt 1
+  21          {
+  22            time0++;
+  23            TL0 = 0x33;
+  24            TH0 = 0xFE;//初值计算20ms波形信号，分成40份调速
+  25            if(time0 == 1){
+  26              rforward();
+  27            }
+  28            if(time0 == rtimer){
+  29              rstop();
+  30            }
+  31              
+  32            if(time0 == 40){
+  33              time0 = 0;
+  34                  
+  35            }
+  36          }*/
+  37          void time1_init(){
+  38   1        TMOD &= 0x0f;
+  39   1        TMOD |= 0x10;
+  40   1        //2 计算需要的时间
+  41   1        TL1 = 0x33;
+  42   1        TH1 = 0xFE;
+  43   1        //3 开始运行
+  44   1        TR1 = 1;
+  45   1        TF1 = 0;
+  46   1        //打开中断
+  47   1        ET1 = 1;
+  48   1        //打开总线
+  49   1        EA = 1;
+  50   1      }
+  51          void overtime1() interrupt 3
+  52          {
+  53   1        time1++;
+  54   1        TL1 = 0x33;
+  55   1        TH1 = 0xFE;//初值计算20ms波形信号，分成40份调速
+C51 COMPILER V9.52.0.0   TIMER                                                             03/14/2024 19:39:16 PAGE 2   
+
+  56   1        if(time1 == 1){
+  57   2          lforward();
+  58   2        }
+  59   1        if(time1 == ltimer){
+  60   2          lstop();
+  61   2        }
+  62   1          
+  63   1        if(time1 == 40){
+  64   2          time1 = 0;
+  65   2              
+  66   2        }
+  67   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    148    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
